@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marinas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Marinas in {{ query }}</h1>
+        <div id="map" style="height: 400px; margin-bottom: 20px;"></div>
+        <ul class="list-group">
+            {% for marina in marinas %}
+                <li class="list-group-item">
+                    <h5>{{ marina.name }}</h5>
+                    <p>{{ marina.address }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        function initMap() {
+            const marinas = {{ marinas|tojson }};
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: marinas[0].location.lat, lng: marinas[0].location.lng }
+            });
+
+            marinas.forEach(marina => {
+                new google.maps.Marker({
+                    position: marina.location,
+                    map: map,
+                    title: marina.name
+                });
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap"></script>
+</body>
+</html>

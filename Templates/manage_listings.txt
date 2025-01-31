@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Listings</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5deb3;
+            color: black;
+        }
+
+        .header {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 50px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header a {
+            color: black;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .header a:hover {
+            text-decoration: underline;
+        }
+
+        .header .logo {
+            position: absolute;
+            left: calc(37% - 25px);
+            top: 6px;
+            gap: 5px;
+        }
+
+        .header .logo img {
+            max-height: 60px;
+            object-fit: contain;
+        }
+
+        .header .logo-text {
+            font-size: 2.5em;
+            color: gray;
+            font-weight: bold;
+            text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+            line-height: 2;
+            white-space: nowrap;
+        }
+
+        .content {
+            margin-top: 70px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 20px;
+            font-size: 1.2em;
+        }
+
+        .tabs a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            color: black;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .tabs a:hover {
+            background-color: #ddd;
+        }
+
+        .tabs .active {
+            background-color: #e0e0e0;
+        }
+
+        .listing-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+            width: 80%;
+        }
+
+        .listing-card {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .listing-card h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .listing-card .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: green;
+        }
+
+        .listing-card .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .listing-card .actions button {
+            padding: 5px 10px;
+            background-color: #f5deb3;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .listing-card .actions button:hover {
+            background-color: #ddd;
+        }
+
+        .listing-card .edit-button {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .listing-card .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="links">
+            <a href="/boat_slips_page">Explore Listings</a>
+            <a href="/boat_slips">Sell</a>
+            <div class="dropdown">
+                <a href="#">Rent</a>
+                <div class="dropdown-content">
+                    <a href="/rental_listing">Create Listing</a>
+                    <a href="/explore_rental_listings">Explore Listings</a>
+                </div>
+            </div>
+            <a href="/manage_listings" class="active">Manage Listings</a>
+        </div>
+        <div class="logo">
+            <img src="/assets/photos/SlipFinder.jpg" alt="SlipFinder Logo">
+            <span class="logo-text">SlipFinder</span>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Manage Your Listings</h1>
+
+        <div class="tabs">
+            <a href="#sale-listings" class="active">Sale Listings</a>
+            <a href="#rental-listings">Rental Listings</a>
+        </div>
+
+        <div id="sale-listings" class="listing-section">
+            <h2>Sale Listings</h2>
+
+            <!-- Example Sale Listing -->
+            <div class="listing-card">
+                <div>
+                    <h2>Marina Slip - Waterfront</h2>
+                    <p>Location: Miami, FL</p>
+                    <p class="price">$75,000</p>
+                </div>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="delete-button">Delete</button>
+                </div>
+            </div>
+
+            <!-- Another Example Sale Listing -->
+            <div class="listing-card">
+                <div>
+                    <h2>Boat Slip - Ocean View</h2>
+                    <p>Location: San Diego, CA</p>
+                    <p class="price">$50,000</p>
+                </div>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="delete-button">Delete</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="rental-listings" class="listing-section" style="display:none;">
+            <h2>Rental Listings</h2>
+
+            <!-- Example Rental Listing -->
+            <div class="listing-card">
+                <div>
+                    <h2>Boat Slip - Daily Rental</h2>
+                    <p>Location: Clearwater, FL</p>
+                    <p class="price">$150 per day</p>
+                </div>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="delete-button">Delete</button>
+                </div>
+            </div>
+
+            <!-- Another Example Rental Listing -->
+            <div class="listing-card">
+                <div>
+                    <h2>Dock Space - Weekly Rental</h2>
+                    <p>Location: Key West, FL</p>
+                    <p class="price">$900 per week</p>
+                </div>
+                <div class="actions">
+                    <button class="edit-button">Edit</button>
+                    <button class="delete-button">Delete</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const saleTab = document.querySelector('a[href="#sale-listings"]');
+        const rentalTab = document.querySelector('a[href="#rental-listings"]');
+        const saleListings = document.getElementById('sale-listings');
+        const rentalListings = document.getElementById('rental-listings');
+
+        saleTab.addEventListener('click', function(e) {
+            e.preventDefault();
+            saleListings.style.display = 'block';
+            rentalListings.style.display = 'none';
+            saleTab.classList.add('active');
+            rentalTab.classList.remove('active');
+        });
+
+        rentalTab.addEventListener('click', function(e) {
+            e.preventDefault();
+            saleListings.style.display = 'none';
+            rentalListings.style.display = 'block';
+            rentalTab.classList.add('active');
+            saleTab.classList.remove('active');
+        });
+    </script>
+
+</body>
+</html>

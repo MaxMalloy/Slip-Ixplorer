@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marinas</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling on the body */
+            background-color: tan; /* Background color */
+            color: black;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto; /* Allow scrolling only within the container */
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filter {
+            font-size: 1em;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .marina-item {
+            margin-bottom: 20px;
+        }
+
+        .marina-name {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .marina-address {
+            font-size: 1em;
+            color: black;
+            margin: 5px 0;
+        }
+
+        .marina-links {
+            margin-top: 10px;
+        }
+
+        .marina-links a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: blue;
+            font-size: 1em;
+        }
+
+        .marina-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="header">
+            <select id="cityFilter" class="filter">
+                <option value="all">All Cities</option>
+                <option value="Saint Joseph">Saint Joseph</option>
+                <option value="Benton Harbor">Benton Harbor</option>
+                <option value="New Buffalo">New Buffalo</option>
+                <option value="South Haven">South Haven</option>
+            </select>
+        </div>
+
+        <h2>Marinas and Listings</h2>
+        <!-- Marina List -->
+        <div id="marinaList">
+            <div class="marina-item" data-city="Saint Joseph">
+                <div class="marina-name">Anchors Way Marina</div>
+                <div class="marina-address">143 Anchors Way, Saint Joseph, MI 49085</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Anchors+Way+Marina">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Anchors+Way+Marina">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="Saint Joseph">
+                <div class="marina-name">Harbor Shores Marina</div>
+                <div class="marina-address">800 Whitwam Dr, Saint Joseph, MI 49085</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Harbor+Shores+Marina">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Harbor+Shores+Marina">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="Saint Joseph">
+                <div class="marina-name">The Waterfront Marina</div>
+                <div class="marina-address">111 Main St, Saint Joseph, MI 49085</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=The+Waterfront+Marina">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=The+Waterfront+Marina">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="Benton Harbor">
+                <div class="marina-name">Pier 1000 Marina</div>
+                <div class="marina-address">1000 Riverview Dr, Benton Harbor, MI 49022</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Pier+1000+Marina">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Pier+1000+Marina">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="New Buffalo">
+                <div class="marina-name">The Moorings</div>
+                <div class="marina-address">110 Water St, New Buffalo, MI 49117</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=The+Moorings">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=The+Moorings">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="South Haven">
+                <div class="marina-name">River Noire Yacht Club</div>
+                <div class="marina-address">530 Williams St, South Haven, MI 49090</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=River+Noire+Yacht+Club">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=River+Noire+Yacht+Club">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="South Haven">
+                <div class="marina-name">Black River Yacht Club</div>
+                <div class="marina-address">514 Williams St, South Haven, MI 49090</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Black+River+Yacht+Club">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Black+River+Yacht+Club">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="South Haven">
+                <div class="marina-name">Boat Yard Basin</div>
+                <div class="marina-address">629 E Wells St, South Haven, MI 49090</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Boat+Yard+Basin">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Boat+Yard+Basin">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="South Haven">
+                <div class="marina-name">Oak Harbor</div>
+                <div class="marina-address">525 Oak St, South Haven, MI 49090</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Oak+Harbor">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Oak+Harbor">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="South Haven">
+                <div class="marina-name">Woodland Harbor Marina</div>
+                <div class="marina-address">525 Kentucky Ave, South Haven, MI 49090</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Woodland+Harbor+Marina">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Woodland+Harbor+Marina">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="New Buffalo">
+                <div class="marina-name">Harbor Landing</div>
+                <div class="marina-address">20 Oselka Dr, New Buffalo, MI 49117</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Harbor+landing">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Harbor+Landing">Sale Listings</a>
+                </div>
+            </div>
+            <div class="marina-item" data-city="New Buffalo">
+                <div class="marina-name">Harbor Point</div>
+                <div class="marina-address">15 Oselka Dr, New Buffalo, MI 49117</div>
+                <div class="marina-links">
+                    <a href="/explore_rental_listings?marina=Harbor+Point">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=Harbor+Point">Sale Listings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const filterSelect = document.getElementById('cityFilter');
+        const marinaList = document.getElementById('marinaList');
+        const marinaItems = marinaList.getElementsByClassName('marina-item');
+
+        filterSelect.addEventListener('change', function () {
+            const selectedCity = this.value;
+
+            for (let i = 0; i < marinaItems.length; i++) {
+                const marina = marinaItems[i];
+                const city = marina.getAttribute('data-city');
+
+                if (selectedCity === 'all' || city === selectedCity) {
+                    marina.style.display = '';
+                } else {
+                    marina.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

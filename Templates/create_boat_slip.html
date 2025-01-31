@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Boat Slip Listing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        .left-column {
+            background-color: tan;
+            flex: 1;
+            padding: 20px;
+        }
+        .right-column {
+            background-color: white;
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            position: relative;
+            top: -86px;
+        }
+        form {
+            max-width: 600px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        textarea {
+            resize: none;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .logo-container {
+            position: absolute;
+            top: 1.9%;
+            left: 46.25%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            height: 100px;
+            width: 200px;
+        }
+        .logo-container img {
+            width: 50%;
+            max-width: 300px;
+            object-fit: contain;
+        }
+        .box {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 80%;
+            height: auto;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            color: black;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .box:hover {
+            background-color: #f9f9f9;
+        }
+        .dropdown-container {
+            display: none;
+            background-color: white;
+            color: black;
+            width: 80%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 1em;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+        .box.open + .dropdown-container {
+            display: block;
+        }
+        .dropdown-arrow {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+        }
+        .visible {
+            display: block;
+        }
+        .review-section {
+            max-width: 600px;
+        }
+        .review-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .review-section p {
+            margin: 10px 0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-column">
+        <h1>Create Boat Slip Listing</h1>
+        <div id="formContainer">
+            <form id="createBoatSlipForm">
+                <label for="slipName">Marina Name:</label>
+                <input type="text" id="slipName" name="slipName" placeholder="Enter boat slip name" required>
+                
+                <label for="marinaAddress">Marina Address:</label>
+                <input type="text" id="marinaAddress" name="marinaAddress" placeholder="Enter Marina Address" required>
+                
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" placeholder="Enter location" required>
+                
+                <label for="price">Asking Price ($):</label>
+                <input type="number" id="price" name="price" placeholder="Enter asking price" min="0" step="0.01" required>
+                
+                <label for="width">Width of Slip (feet):</label>
+                <input type="number" id="width" name="width" placeholder="Enter slip width" min="0" step="0.01" required>
+                
+                <label for="length">Length of Slip (feet):</label>
+                <input type="number" id="length" name="length" placeholder="Enter slip length" min="0" step="0.01" required>
+                
+                <label for="slipNumber">Slip Number:</label>
+                <input type="text" id="slipNumber" name="slipNumber" placeholder="Enter boat slip number" required>
+                
+                <label for="taxes">Annual Property Taxes ($):</label>
+                <input type="number" id="taxes" name="taxes" placeholder="Enter annual property taxes" min="0" step="0.01" required>
+                
+                <label for="hoaFees">Annual HOA Fees ($):</label>
+                <input type="number" id="hoaFees" name="hoaFees" placeholder="Enter annual HOA fees" min="0" step="0.01" required>
+                
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="5" placeholder="Describe the boat slip (e.g., amenities)" required></textarea>
+                
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" placeholder="Enter Email" required>
+                
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                
+                <button type="submit">Review Listing</button>
+            </form>
+        </div>
+    </div>
+    <div class="logo-container">
+        <a href="/dashboard">
+            <img src="/assets/photos/IxPlorer.jpg" alt="IxPlorer Logo">
+        </a>
+    </div>
+    <div class="right-column">
+    <h1>Frequently Asked Questions</h1>
+
+    <!-- Dropdown Box 1 -->
+    <div class="box" onclick="toggleDropdown('why-list-dropdown')">
+        Why List Your Boat Slip? ▼
+    </div>
+    <div class="dropdown-container" id="why-list-dropdown">
+        <p>Listing your boat slip on <strong>SlipIxplorer.com</strong> connects you with a vast network of potential buyers actively seeking boat slips.</p>
+        <p>Our platform simplifies the listing process, saving you time and effort. With only a $10 listing fee and a recurring monthly fee of $10, our site provides an affordable way to list your boat slip for sale.</p>
+        <p>Take advantage of our targeted audience and user-friendly tools to maximize visibility and value for your listing.</p>
+    </div>
+
+    <!-- Dropdown Box 2 -->
+    <div class="box" onclick="toggleDropdown('fees-dropdown')">
+        What Are the Costs? ▼
+    </div>
+    <div class="dropdown-container" id="fees-dropdown">
+        <p>We charge a small $10 initial listing fee and a monthly fee of $10 to keep your listing live. This fee ensures your listing reaches potential buyers so that your slip can sell as fast as possible.</p>
+        <p>With a low affordable rate to keep your listing live, our site provides a great opportunity for you to reach a targeted audience that is looking to buy your slip!</p>
+    </div>
+
+    <!-- Dropdown Box 3 -->
+    <div class="box" onclick="toggleDropdown('features-dropdown')">
+        Start Listing Today! ▼
+    </div>
+    <div class="dropdown-container" id="features-dropdown">
+        <p>Your listing will showcase details like dimensions, utilities, and pricing. Contact information will be displayed prominently for easy communication with interested renters.</p>
+    </div>
+</div>
+    <script>
+    // Reference to the form container and the form
+    const formContainer = document.getElementById('formContainer');
+    const form = document.getElementById('createBoatSlipForm');
+
+    // Event listener for form submission
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Gather form data
+        const formData = new FormData(form);
+        const slipData = Object.fromEntries(formData.entries());
+
+        // Create a review section dynamically
+        const reviewHTML = `
+            <div class="review-section">
+                <h2>Review Your Listing</h2>
+                <p><strong>Marina Name:</strong> ${slipData.slipName}</p>
+                <p><strong>Marina Address:</strong> ${slipData.marinaAddress}</p>
+                <p><strong>Location:</strong> ${slipData.location}</p>
+                <p><strong>Asking Price:</strong> $${slipData.price}</p>
+                <p><strong>Width of Slip:</strong> ${slipData.width} feet</p>
+                <p><strong>Length of Slip:</strong> ${slipData.length} feet</p>
+                <p><strong>Slip Number:</strong> ${slipData.slipNumber}</p>
+                <p><strong>Annual Property Taxes:</strong> $${slipData.taxes}</p>
+                <p><strong>Annual HOA Fees:</strong> $${slipData.hoaFees}</p>
+                <p><strong>Description:</strong> ${slipData.description}</p>
+                <p><strong>Email:</strong> ${slipData.email}</p>
+                <p><strong>Phone Number:</strong> ${slipData.phone}</p>
+                <button id="proceedButton" class="confirm-button">Confirm And Submit For Review</button>
+            </div>
+        `;
+
+        // Replace the form content with the review section
+        formContainer.innerHTML = reviewHTML;
+
+        // Add an event listener for the "Proceed" button
+        const proceedButton = document.getElementById('proceedButton');
+        proceedButton.addEventListener('click', () => {
+            alert("Opening Email, this may take a minute"); // Placeholder action
+            // Add your logic for proceeding to payment or the next step here
+
+        const emailBody = `
+            Marina Name: ${slipData.slipName}
+            Marina Address: ${slipData.marinaAddress}
+            Location: ${slipData.location}
+            Asking Price: $${slipData.price}
+            Width: ${slipData.width} feet
+            Length: ${slipData.length} feet
+            Slip Number: ${slipData.slipNumber}
+            Taxes: $${slipData.taxes}
+            HOA Fees: $${slipData.hoaFees}
+            Description: ${slipData.description}
+            Email: ${slipData.email}
+            Phone: ${slipData.phone}
+            `;
+        window.location.href = `mailto:ixplorer.com@gmail.com?subject=New Boat Slip Listing&body=${encodeURIComponent(emailBody)}`;
+        
+        setTimeout(() => {
+            window.location.href = '/listing_confirmation';
+        }, 30000); // 30 seconds
+        });
+    });
+        function toggleDropdown(id) {
+    const box = document.querySelector(`#${id}`).previousElementSibling;
+    const dropdown = document.getElementById(id);
+
+    // Toggle visibility
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+        box.classList.remove("open");
+    } else {
+        dropdown.style.display = "block";
+        box.classList.add("open");
+    }
+}
+</script>   
+           </body>
+</html>

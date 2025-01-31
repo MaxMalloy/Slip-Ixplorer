@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Listings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #d2b48c;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            background-color: white;
+            height: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            height: 120px;
+            margin: 0;
+        }
+
+        .header-title-container {
+            text-align: center;
+            width: 100%;
+            position: relative;
+            top: -20px;
+        }
+
+        .header-title {
+            font-size: 2em;
+            color: #333;
+            margin: 0;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: -30px 0 20px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            width: 60%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .search-button {
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .search-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .listings-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto;
+            height: 70vh;
+        }
+
+        .listing-box {
+            width: 80%;
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .image-container {
+            flex: 0 0 200px;
+            height: 150px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .details-container {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: black; /* Black by default */
+        }
+
+        .price a {
+            color: blue; /* Make the price look like a link */
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .price a:hover {
+            color: darkblue; /* Darker blue on hover for emphasis */
+            text-decoration: underline;
+        }
+
+        .location {
+            font-size: 1em;
+            color: #666;
+        }
+
+        .property-name {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .view-map-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 10px 20px;
+            border-top: 2px solid #ccc;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .view-map-link {
+            font-size: 1em;
+            color: navy;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-map-link:hover {
+            text-decoration: underline;
+            color: darkblue;
+        }
+
+        #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/dashboard">
+            <img src="/assets/photos/IxPlorer.jpg" alt="Logo" class="logo">
+        </a>
+        <div class="header-title-container">
+            <h1 class="header-title">Rental Listings</h1>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="search-bar">
+            <input type="text" id="search-input" class="search-input" placeholder="Search by location or property">
+            <button class="search-button" onclick="searchListings()">
+                <img src="https://img.icons8.com/ios-filled/50/000000/search--v1.png" alt="Search">
+            </button>
+        </div>
+    </div>
+
+    <div class="listings-container" id="listings-container">
+        <!-- Dynamic listings start -->
+        {% for listing in rental_listings %}
+        <div class="listing-box" data-location="{{ listing.city }}, {{ listing.state }}" data-property="{{ listing.marina }}">
+            <div class="image-container">
+                <img src="{{ url_for('uploaded_file', filename=listing.slip_number + '.jpg') }}" alt="{{ listing.marina }}">
+            </div>
+            <div class="details-container">
+                <div class="price">
+                    <a href="/rental_listing/{{ listing.id }}">${{ listing.price_year }}/year</a>
+                </div>
+                <div class="location">Location: {{ listing.city }}, {{ listing.state }}</div>
+                <div class="property-name">Marina: {{ listing.marina }}</div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Dynamic listings end -->
+    </div>
+
+    <script>
+    function searchListings() {
+        const input = document.getElementById('search-input').value.trim().toLowerCase();
+        const listings = document.querySelectorAll('.listing-box');
+
+        listings.forEach(listing => {
+            const location = listing.getAttribute('data-location').trim().toLowerCase();
+            const property = listing.getAttribute('data-property').trim().toLowerCase();
+
+            if (property.includes(input) || location.includes(input)) {
+                listing.style.display = 'flex'; // Show matching listings
+            } else {
+                listing.style.display = 'none'; // Hide non-matching listings
+            }
+        });
+    }
+
+    // Function to get query parameters from URL
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Function to populate the search bar and trigger filtering
+    function populateSearchFromURL() {
+        const marinaName = getQueryParam('marina');
+        if (marinaName) {
+            const searchInput = document.getElementById('search-input');
+            searchInput.value = decodeURIComponent(marinaName).trim(); // Set input value
+            searchListings(); // Trigger search function
+        }
+    }
+
+    // Run the function on page load
+    window.onload = function () {
+        populateSearchFromURL();
+    };
+</script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiuS9mAJjmQ6xu1GLjGPd8FVq56o4mb0Q"></script>
+</body>
+</html>

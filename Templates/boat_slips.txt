@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boat Slips Listings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        .slip-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .slip-image {
+            max-width: 150px;
+            max-height: 150px;
+            margin-right: 20px;
+        }
+        .slip-details {
+            flex: 1;
+        }
+        .slip-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .slip-price {
+            color: green;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Boat Slip Listings</h1>
+        {% for slip in boat_slips %}
+        <div class="slip-card">
+            <img src="{{ slip.image_url }}" alt="{{ slip.title }}" class="slip-image">
+            <div class="slip-details">
+                <div class="slip-title">{{ slip.title }}</div>
+                <div class="slip-price">${{ slip.price }}</div>
+                <div class="slip-description">{{ slip.description }}</div>
+                <div class="slip-location">Location: {{ slip.location }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

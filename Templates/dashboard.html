@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5deb3;
+            height: 100vh;
+            color: black;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 60px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            position: absolute;
+            left: 20px; /* Position the links on the left */
+        }
+
+        .links a {
+            color: black;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+         .dropdown {
+        position: relative;
+        display: inline-block;
+        }
+
+        /* Dropdown button styling */
+        .dropdown-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+
+        /* Dropdown menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 160px;
+        }
+
+        /* Dropdown menu links */
+        .dropdown-content a {
+            color: black;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Show dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: 80%;
+            transform: translateX(-50%);
+            gap: 10px; /* Add spacing between the image and text */
+        }
+
+        .logo-container img {
+            height: 60px;
+            width: 60px;
+            object-fit: contain;
+        }
+        
+        .logo-text {
+            font-size: 2em; /* Adjust font size */
+            color: silver; /* Change text color to orange-red */
+            font-weight: bold; /* Optional: Make the text bold */
+            text-shadow: 
+           -1px -1px 0 black, /* Top left shadow */
+            1px -1px 0 black, /* Top right shadow */
+           -1px  1px 0 black, /* Bottom left shadow */
+            1px  1px 0 black; /* Bottom right shadow */
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .search-bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 300px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            padding-right: 40px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            background: url('/assets/icons/magnifying_glass_icon.png') no-repeat center;
+            background-size: contain;
+        }
+
+        #map {
+            width: 100%;
+            height: 50vh;
+            margin-top: auto;
+            border-top: 2px solid white;
+        }
+
+        .white-box {
+            position: absolute;
+            top: calc(50px + 7%);
+            left: 3%;
+            height: calc(26.5%);
+            width: 23%;
+            background-color: white;
+            border: 1px solid gray;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .white-box-right {
+            position: absolute;
+            top: calc(50px + 7%);
+            right: 3%;
+            height: calc(26.5%);
+            width: 23%;
+            background-color: white;
+            border: 1px solid gray;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="links">
+        <div class="dropdown">
+            <button class="dropdown-btn">Rent</button>
+            <div class="dropdown-content">
+                <a href="/rental_listing">Create Listing</a>
+                <a href="/explore_rental_listings">Explore Listings</a>
+            </div>
+        </div>
+        <a href="/boat_slips_page">Explore Sale Listings</a>
+        <a href="/boat_slips">Sell</a>
+        <a href="/manage_listings">Manage Listings</a>
+        <a href="/contact_us">Contact Us</a>
+        <a href="/login_form">Login</a>
+        <a href="/register_form">Register</a>
+    </div>
+    <div class="logo-container">
+        <img src="/assets/photos/IxPlorer.jpg" alt="SlipFinder Logo">
+        <span class="logo-text">Slip IxPlorer</span>
+    </div>
+</div>
+    <div class="content">
+        <h1>Find Your Slip Today</h1>
+        <div class="search-bar-container">
+            <h2 style="font-size: 1.5em; color: #555; margin: 0; text-align: center;">Your Slip Awaits, Ixplore Today</h2>
+        </div>
+    </div>
+
+    <div class="white-box" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <p style="font-size: 1.5em; margin: 0;">List your slip and find buyers or renters today!!</p>
+        <p style="margin: 10px 0 0 0;">
+            <div class="dropdown" style="font-size: 1.5em;">
+                <button class="dropdown-button" style="background-color: dodgerblue; color: white; padding: 9px 18px; font-size: 1.5em; border: none; border-radius: 10px; cursor: pointer;">
+                    List Now!!
+                </button>
+                <div class="dropdown-content" style="background-color: dodgerblue; font-size: 1.3em; padding: 10px; border-radius: 10px;">
+                    <a href="/rental_listing" style="color: white; text-decoration: none; display: block; padding: 10px;">Rental Listing</a>
+                    <a href="/boat_slips" style="color: white; text-decoration: none; display: block; padding: 10px;">Sale Listing</a>
+                </div>
+            </div>
+        </p>
+    </div>
+    
+    <div class="white-box-right" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <p style="font-size: 1.5em; margin: 0;">List Of Private Marinas In Southwest Michigan</p>
+        <p style="font-size: 1.5em; margin: 10px 0 0 0;"><a href="/marina_list">View Marinas</a></p>
+    </div>
+
+    <div id="map"></div>
+    <script>
+    let map, service, geocoder;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 42.1167, lng: -86.4542 },
+            zoom: 8
+        });
+
+        geocoder = new google.maps.Geocoder();
+        service = new google.maps.places.PlacesService(map);
+        
+        // Add predefined marinas as markers
+        addPredefinedMarinas();
+    }
+
+    function addPredefinedMarinas() {
+    const marinas = [
+        { name: "Anchors Way Marina", location: { lat: 42.0989, lng: -86.4894 } },
+        { name: "Harbor Shores Marina", location: { lat: 42.1163, lng: -86.4821 } },
+        { name: "The Waterfront Marina", location: { lat: 42.1158, lng: -86.4827 } },
+        { name: "Pier 1000 Marina", location: { lat: 42.1172, lng: -86.4548 } },
+        { name: "The Moorings", location: { lat: 41.7933, lng: -86.7429 } },
+        { name: "River Noire Yacht Club", location: { lat: 42.4024, lng: -86.2759 } },
+        { name: "Black River Yacht Club", location: { lat: 42.4042, lng: -86.2735 } },
+        { name: "Boat Yard Basin", location: { lat: 42.4018, lng: -86.2732 } },
+        { name: "Oak Harbor", location: { lat: 42.4033, lng: -86.2728 } },
+        { name: "Woodland Harbor Marina", location: { lat: 42.4066, lng: -86.2777 } },
+        { name: "Harbor Landing", location: { lat: 41.7911, lng: -86.7425 } },
+        { name: "Harbor Point", location: { lat: 41.7915, lng: -86.7418 } }
+    ];
+
+    marinas.forEach(marina => {
+        const marker = new google.maps.Marker({
+            position: marina.location,
+            map: map,
+            title: marina.name,
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            }
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: `
+                <div style="width: 300px; text-align: center;">
+                    <h3 style="margin: 0;">${marina.name}</h3>
+                    <a href="/explore_rental_listings?marina=${encodeURIComponent(marina.name)}" style="display: block; margin: 10px 0; color: blue; text-decoration: underline;">Rental Listings</a>
+                    <a href="/boat_slips_page?marina=${encodeURIComponent(marina.name)}" style="display: block; margin: 10px 0; color: blue; text-decoration: underline;">Sale Listings</a>
+                </div>
+            `
+        });
+
+        marker.addListener('click', () => {
+            infoWindow.open(map, marker);
+        });
+    });
+}
+
+    function handleSearch() {
+        const address = document.getElementById('search-input').value;
+
+        if (!address) {
+            alert("Please enter a location.");
+            return;
+        }
+
+        geocoder.geocode({ address }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK) {
+                const location = results[0].geometry.location;
+                map.setCenter(location);
+                map.setZoom(12);
+                searchMarinas();
+            } else {
+                alert("Could not find the location: " + status);
+            }
+        });
+    }
+
+    function searchMarinas() {
+        const bounds = map.getBounds();
+
+        if (!bounds) {
+            console.error("Map bounds are not available.");
+            return;
+        }
+
+        const request = {
+            bounds: bounds,
+            keyword: 'marina',
+            type: 'marina'
+        };
+
+        service.nearbySearch(request, (results, status) => {
+            if (status === google.maps.Places.PlacesServiceStatus.OK) {
+                results.forEach(place => {
+                    const marker = new google.maps.Marker({
+                        map: map,
+                        position: place.geometry.location,
+                        title: place.name,
+                        icon: {
+                            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                        }
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow();
+
+                    service.getDetails({ placeId: place.place_id }, (placeDetails, detailStatus) => {
+                        if (detailStatus === google.maps.Places.PlacesServiceStatus.OK && placeDetails) {
+                            const listingsLink = `<a href="#" onclick="navigateToListings('${encodeURIComponent(placeDetails.name)}')">View Available Listings</a>`;
+                            infoWindow.setContent(`
+                                <div>
+                                    <h3>${placeDetails.name || 'No Name Available'}</h3>
+                                    <p>${placeDetails.vicinity || 'No Address Available'}</p>
+                                    <p>${listingsLink}</p>
+                                </div>
+                            `);
+                        } else {
+                            console.error("Failed to get place details: ", detailStatus);
+                            infoWindow.setContent(`
+                                <div>
+                                    <h3>${place.name || 'No Name Available'}</h3>
+                                    <p>${place.vicinity || 'No Address Available'}</p>
+                                </div>
+                            `);
+                        }
+                    });
+
+                    marker.addListener('click', () => {
+                        infoWindow.open(map, marker);
+                    });
+                });
+            } else {
+                console.error("Nearby search failed: ", status);
+            }
+        });
+    }
+
+    function navigateToListings(marinaName) {
+        const targetUrl = '/boat_slips_page';
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = targetUrl;
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'marina';
+        input.value = decodeURIComponent(marinaName);
+        form.appendChild(input);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiuS9mAJjmQ6xu1GLjGPd8FVq56o4mb0Q&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>

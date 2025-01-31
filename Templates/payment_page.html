@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+        .form-container {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Confirm Payment</h1>
+    <div class="form-container">
+        <form id="payment-form">
+            <div id="card-element"></div>
+            <button type="submit">Pay $10</button>
+            <p id="error-message"></p>
+        </form>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_test_51Qdz4k2NotfB72cNmJ0D8oQyJPUsrxZ1WuGqHDEXriodxoonhm9Qaky4NZfBBfp1A4lpPEsbEMiw0k6h1CQZecKY00sKBM0Q7r'); // Your publishable key
+        const elements = stripe.elements();
+        const card = elements.create('card');
+        card.mount('#card-element');
+
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const { paymentMethod, error } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: card,
+            });
+
+            if (error) {
+                document.getElementById('error-message').textContent = error.message;
+            } else {
+                // Send paymentMethod.id to the server
+                fetch('/create-subscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer <your-auth-token>', // Add this if required by your server
+                },
+    body: JSON.stringify({ paymentMethodId: paymentMethod.id }),
+})
+                                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Payment successful!');
+                        window.location.href = '/confirmation'; // Redirect to a confirmation page
+                    } else {
+                        document.getElementById('error-message').textContent = data.error;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

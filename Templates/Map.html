@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marinas in {{ query }}</title>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Marinas in {{ query }}</h1>
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            const marinas = {{ marinas|tojson }};
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: marinas.length > 0
+                    ? { lat: marinas[0].geometry.location.lat, lng: marinas[0].geometry.location.lng }
+                    : { lat: 0, lng: 0 }
+            });
+
+            marinas.forEach(marina => {
+                const marker = new google.maps.Marker({
+                    position: marina.geometry.location,
+                    map: map,
+                    title: marina.name
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<h3>${marina.name}</h3><p>${marina.formatted_address}</p>`
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap"></script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Boat Slips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #d2b48c;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            background-color: white;
+            height: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            height: 120px;
+            margin: 0;
+        }
+
+        .header-title-container {
+            text-align: center;
+            width: 100%;
+            position: relative;
+            top: -20px;
+        }
+
+        .header-title {
+            font-size: 2em;
+            color: #333;
+            margin: 0;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: -30px 0 20px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            width: 60%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            font-size: 1em;
+            outline: none;
+        }
+
+        .search-button {
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .search-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .listings-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto;
+            height: 70vh;
+        }
+
+        .listing-box {
+            width: 80%;
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .image-container {
+            flex: 0 0 200px;
+            height: 150px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heart-icon {
+            position: absolute; /* Position relative to the listing-box */
+            top: 10px; /* Adjust to desired location within the listing */
+            right: 10px; /* Adjust to desired location within the listing */
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .heart-icon img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .saved-message {
+            position: absolute;
+            top: 40px; /* Adjust as needed */
+            right: 10px; /* Align with the heart icon */
+            background-color: #007BFF;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: none; /* Hidden by default */
+        }
+
+                .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .details-container {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: black; /* Changed to black */
+        }
+
+        .location {
+            font-size: 1em;
+            color: #666;
+        }
+
+        .marina {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .map-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: navy;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .map-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .map-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 9999;
+        }
+        
+        .view-map-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 10px 20px;
+            border-top: 2px solid #ccc;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .view-map-link {
+            font-size: 1em;
+            color: navy;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-map-link:hover {
+            text-decoration: underline;
+            color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/dashboard">
+            <img src="/assets/photos/IxPlorer.jpg" alt="SlipFinder Logo" class="logo">
+        </a>
+        <div class="header-title-container">
+            <h1 class="header-title">Available Boat Slips</h1>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="search-bar">
+            <input type="text" id="search-input" class="search-input" placeholder="Search by location or marina">
+            <button class="search-button" onclick="searchListings()">
+                <img src="https://img.icons8.com/ios-filled/50/000000/search--v1.png" alt="Search">
+            </button>
+        </div>
+    </div>
+
+    <div class="listings-container" id="listings-container">
+        {% for slip in boat_slips %}
+        <div class="listing-box" data-location="{{ slip.location }}" data-marina="{{ slip.title }}">
+            <div class="image-container">
+                {% if slip.image_filename %}
+            <a href="/listing/{{ slip.id }}">
+            <img src="{{ url_for('uploaded_file', filename=slip.image_filename) }}" alt="{{ slip.title }}">
+        </a>
+        {% else %}
+        <p>No Image</p>
+        {% endif %}
+    </div>
+    <div class="details-container">
+        <div class="price"><a href="/listing/{{ slip.id }}"> {{ slip.price }}</a></div>
+        <div class="location">{{ slip.location }}</div>
+        <div class="marina">{{ slip.title }}</div>
+    </div>
+ </div> 
+        {% endfor %}
+ </div>
+
+<script>
+    // Function to extract query parameters
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Automatically populate the search bar and trigger the search
+    window.onload = function () {
+        const marinaName = getQueryParam('marina');
+        if (marinaName) {
+            const searchBar = document.getElementById('search-input'); // Search bar ID
+            if (searchBar) {
+                searchBar.value = marinaName; // Populate the search bar
+                searchListings(); // Trigger the search function
+            }
+        }
+    };
+</script>
+
+<script>
+    let mapInitialized = false;
+
+    function searchListings() {
+        const input = document.getElementById('search-input').value.toLowerCase();
+        const listings = document.querySelectorAll('.listing-box');
+
+        listings.forEach(listing => {
+            const location = listing.getAttribute('data-location').toLowerCase();
+            const marina = listing.getAttribute('data-marina').toLowerCase();
+
+            if (location.includes(input) || marina.includes(input)) {
+                listing.style.display = '';
+            } else {
+                listing.style.display = 'none';
+            }
+        });
+    }
+
+    function toggleMap() {
+        const mapContainer = document.getElementById('map');
+        if (mapContainer.style.display === 'none' || mapContainer.style.display === '') {
+            mapContainer.style.display = 'block';
+            if (!mapInitialized) {
+                initializeMap();
+                mapInitialized = true;
+            }
+        } else {
+            mapContainer.style.display = 'none';
+        }
+    }
+
+    function toggleHeart(element) {
+        const heartIcon = element.querySelector("img");
+        const savedMessage = element.querySelector(".saved-message");
+
+        if (heartIcon.src.includes("like--v1.png")) {
+            // Change to red heart and show the saved message
+            heartIcon.src = "https://img.icons8.com/ios-filled/50/ff0000/like--v1.png";
+            savedMessage.style.display = "block";
+
+            // Hide the message after 2 seconds
+            setTimeout(() => {
+                savedMessage.style.display = "none";
+            }, 2000);
+        } else {
+            // Revert to original heart
+            heartIcon.src = "https://img.icons8.com/ios/50/000000/like--v1.png";
+        }
+    }
+
+    function initializeMap() {
+        if (!window.google || !google.maps) {
+            console.error("Google Maps API failed to load.");
+            return;
+        }
+
+        const map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 37.7749, lng: -122.4194 }, // Default center (change as needed)
+            zoom: 10,
+        });
+
+        const markers = [
+            {% for slip in boat_slips %}
+            { lat: {{ slip.latitude }}, lng: {{ slip.longitude }}, title: "{{ slip.title }}" },
+            {% endfor %}
+        ];
+
+        markers.forEach(markerData => {
+            new google.maps.Marker({
+                position: { lat: markerData.lat, lng: markerData.lng },
+                map: map,
+                title: markerData.title,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            });
+        });
+    }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiuS9mAJjmQ6xu1GLjGPd8FVq56o4mb0Q"></script>
+
+</body>
+</html>

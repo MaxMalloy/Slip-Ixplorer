@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Map with Listings</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .close-button span {
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Close button -->
+    <div class="close-button" onclick="closeMap()">
+        <span>X</span>
+    </div>
+
+    <script>
+        let map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 42.1081, lng: -86.4830 }, // Default center: Saint Joseph, Michigan
+                zoom: 12
+            });
+
+            // Fetch listings from the rent_slip table
+            fetch('/api/rent_slips')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    addMarkers(data);
+                })
+                .catch(error => console.error('Error fetching rental listings:', error));
+        }
+
+        function addMarkers(listings) {
+            listings.forEach(listing => {
+                if (listing.latitude && listing.longitude) {  // Ensure lat/lng exist
+                    const marker = new google.maps.Marker({
+                        position: { lat: listing.latitude, lng: listing.longitude },
+                        map: map,
+                        title: listing.marina,  // Assuming 'marina' is the title field
+                        icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<div>
+                            <h3>${listing.marina}</h3>
+                            <p>${listing.city}, ${listing.state}</p>
+                            <p>Price: $${listing.price_year} / year</p>
+                        </div>`
+                    });
+
+                    marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                    });
+                } else {
+                    console.warn("Skipping listing with missing coordinates:", listing);
+                }
+            });
+        }
+
+        function closeMap() {
+            // Redirect to /explore_rental_listings
+            window.location.href = '/explore_rental_listings';
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiuS9mAJjmQ6xu1GLjGPd8FVq56o4mb0Q&callback=initMap" async defer></script>
+</body>
+</html>

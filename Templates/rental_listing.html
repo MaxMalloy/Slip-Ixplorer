@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boat Slip Yearly Rental Listing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        .left-column {
+            background-color: tan;
+            flex: 1;
+            padding: 20px;
+        }
+        .right-column {
+            background-color: white;
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+        }
+        form {
+            max-width: 600px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .logo-container {
+            position: absolute;
+            top: 2%;
+            left: 46%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            height: 100px;
+            width: 200px;
+        }
+        .logo-container img {
+            width: 50%;
+            max-width: 300px;
+            object-fit: contain;
+        }
+        .faq-container {
+            background-color: black;
+            color: white;
+            width: 80%;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            border-radius: 8px;
+        }
+        .faq-container:hover {
+            background-color: #333;
+        }
+        .faq-content {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .faq-content textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .review-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .review-section h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-column">
+        <h1>List Your Boat Slip for Yearly Rental</h1>
+        <div id="formContainer">
+            <form id="boatSlipForm">
+                <label for="priceYear">Price/Year ($):</label>
+                <input type="number" id="priceYear" name="priceYear" required>
+                
+                <label for="priceMonth">Price/Month ($):</label>
+                <input type="number" id="priceMonth" name="priceMonth" readonly>
+                
+                <label for="marina">Marina:</label>
+                <input type="text" id="marina" name="marina" required>
+                
+                <label for="marinaAddress">Marina Address:</label>
+                <input type="text" id="marinaAddress" name="marinaAddress" required>
+                
+                <label for="length">Length of Boat Slip (ft):</label>
+                <input type="number" id="length" name="length" required>
+                
+                <label for="width">Width of Boat Slip (ft):</label>
+                <input type="number" id="width" name="width" required>
+                
+                <label for="slipNumber">Slip Number:</label>
+                <input type="text" id="slipNumber" name="slipNumber" required>
+                
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+                
+                <label for="state">State:</label>
+                <select id="state" name="state" required>
+                    <option value="" disabled selected>Select a state</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                </select>
+                
+                <label for="electricity">Electricity Available:</label>
+                <select id="electricity" name="electricity" required>
+                    <option value="" disabled selected>Select Yes or No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                
+                <label for="water">Water Available:</label>
+                <select id="water" name="water" required>
+                    <option value="" disabled selected>Select Yes or No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+                
+                <button type="submit">Review Listing</button>
+            </form>
+        </div>
+    </div>
+    <div class="logo-container">
+        <a href="/dashboard">
+            <img src="/assets/photos/IxPlorer.jpg" alt="IxPlorer Logo">
+        </a>
+    </div>
+    <div class="right-column">
+        <h1>Frequently Asked Questions</h1>
+<p>Get your listing live with simple steps.</p>
+
+<div class="faq-container" onclick="toggleFaqContent('faqContent')">
+    Why Rent Your Boat Slip?
+    <span style="float: right;">▼</span>
+</div>
+<div class="faq-content" id="faqContent">
+    <textarea readonly>
+        Renting your boat slip can provide a steady income stream, turning an unused space into a valuable asset.
+        It helps offset marina costs, such as maintenance and utility fees, making boat ownership more affordable.
+        Additionally, it increases the utilization of your slip, potentially boosting its value over time.
+        By renting to reliable tenants, you can turn your boat slip into a low-effort investment with long-term financial benefits.
+    </textarea>
+</div>
+
+<div class="faq-container" onclick="toggleFaqContent('whoContent')">
+    Who Can You Rent To?
+    <span style="float: right;">▼</span>
+</div>
+<div class="faq-content" id="whoContent">
+    <textarea readonly>
+        You can rent to boaters who need seasonal or long-term storage, travelers passing through the area,
+        or locals seeking a secure spot for their boats. Be sure to check marina policies and vet potential
+        renters to ensure compatibility and reliability.
+    </textarea>
+</div>
+
+<div class="faq-container" onclick="toggleFaqContent('whatContent')">
+    What Are The Listing Costs?
+    <span style="float: right;">▼</span>
+</div>
+<div class="faq-content" id="whatContent">
+    <textarea readonly>
+        There is an initial $10 listing fee that must be payed in order for your listing to go live, and it
+        covers the first month that the listing is live on the platform. Each month you will be sent an additional
+        invoice that must be payed within 7 days of being sent to you, or your listing will be taken down from the
+        platform. Of course, if your listing is either rented out or you're no longer interested in advertising on
+        our platform, just contact us in your manage listings tab and we will be happy to take it down for you.
+    </textarea>
+</div>
+    </div>
+    <script>
+        document.getElementById('boatSlipForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const reviewHTML = `
+                <div class="review-section">
+                    <h2>Review Your Listing</h2>
+                    ${Object.keys(data)
+                        .map(key => `<p><strong>${key}:</strong> ${data[key]}</p>`)
+                        .join('')}
+                    <button id="confirmButton" style="margin-top: 20px;">Confirm and Submit</button>
+                </div>
+            `;
+            document.getElementById('formContainer').innerHTML = reviewHTML;
+
+            document.getElementById('confirmButton').addEventListener('click', function() {
+                const emailBody = Object.keys(data)
+                    .map(key => `${key}: ${data[key]}`)
+                    .join('\n');
+
+                window.location.href = `mailto:ixplorer.com@gmail.com?subject=New Boat Slip Listing&body=${encodeURIComponent(emailBody)}`;
+                setTimeout(() => {
+                    window.location.href = '/listing_confirmation';
+                }, 30000);
+            });
+        });
+
+        function toggleFaqContent(id) {
+    const faqContent = document.getElementById(id);
+    if (faqContent.style.display === 'none' || faqContent.style.display === '') {
+        faqContent.style.display = 'block';
+    } else {
+        faqContent.style.display = 'none';
+    }
+}
+    </script>
+</body>
+</html>

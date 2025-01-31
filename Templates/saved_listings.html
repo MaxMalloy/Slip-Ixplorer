@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Slips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .logo-container {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 120px;
+            height: auto;
+            z-index: 1000;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #555;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: #007BFF;
+            border-bottom: 3px solid #007BFF;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .slip {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slip h3 {
+            margin: 0 0 5px;
+            font-size: 1.2em;
+        }
+
+        .slip p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .remove-button {
+            background-color: #FF6F61;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .remove-button:hover {
+            background-color: #E5554F;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo Container -->
+    <div class="logo-container">
+        <a href="/dashboard">
+            <img src="/assets/photos/IxPlorer.jpg" alt="IxPlorer Logo">
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-target="rental-slips">Saved Rental Slips</div>
+            <div class="tab" data-target="sale-slips">Saved Slips for Sale</div>
+        </div>
+
+        <div class="content active" id="rental-slips">
+            {% for listing in listings if listing['type'] == 'rental' %}
+            <div class="slip">
+                <h3>{{ listing.title }}</h3>
+                <p><strong>Location:</strong> {{ listing.location }}</p>
+                <p><strong>Price:</strong> ${{ listing.price }}</p>
+                <p><strong>Description:</strong> {{ listing.description }}</p>
+                {% if listing.image_filename %}
+                <img src="{{ url_for('uploaded_file', filename=listing.image_filename) }}" alt="{{ listing.title }}" style="max-width: 200px;">
+                {% endif %}
+                <button class="remove-button" onclick="removeListing('{{ listing.id }}')">Remove</button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="content" id="sale-slips">
+            {% for listing in listings if listing['type'] == 'sale' %}
+            <div class="slip">
+                <h3>{{ listing.title }}</h3>
+                <p><strong>Location:</strong> {{ listing.location }}</p>
+                <p><strong>Price:</strong> ${{ listing.price }}</p>
+                <p><strong>Description:</strong> {{ listing.description }}</p>
+                {% if listing.image_filename %}
+                <img src="{{ url_for('uploaded_file', filename=listing.image_filename) }}" alt="{{ listing.title }}" style="max-width: 200px;">
+                {% endif %}
+                <button class="remove-button" onclick="removeListing('{{ listing.id }}')">Remove</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.target).classList.add('active');
+            });
+        });
+
+        async function removeListing(listingId) {
+            const response = await fetch('/saved_listings', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ listing_id: listingId })
+            });
+
+            if (response.ok) {
+                alert('Listing removed successfully.');
+                window.location.reload(); // Reload to update the listings
+            } else {
+                alert('Failed to remove listing.');
+            }
+        }
+    </script>
+</body>
+</html>

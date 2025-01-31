@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Map with Listings</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .close-button span {
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Close button -->
+    <div class="close-button" onclick="closeMap()">
+        <span>X</span>
+    </div>
+
+    <script>
+        let map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 42.1081, lng: -86.4830 }, // Default center (Saint Joseph, Michigan)
+                zoom: 12
+            });
+
+            // Fetch query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const marina = urlParams.get('marina');
+            const location = urlParams.get('location');
+
+            if (marina && location) {
+                // Highlight specific marker for the selected marina
+                geocodeLocationAndAddMarker(marina, location);
+            }
+
+            // Fetch all listings from the backend
+            fetch('/api/boat_slips')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    addMarkers(data);
+                })
+                .catch(error => console.error('Error fetching listings:', error));
+        }
+
+        function geocodeLocationAndAddMarker(marina, location) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: location }, (results, status) => {
+                if (status === "OK") {
+                    const position = results[0].geometry.location;
+
+                    // Add a marker for the specified marina
+                    const marker = new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: marina,
+                        icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<div>
+                            <h3>${marina}</h3>
+                            <p>Located in ${location}</p>
+                        </div>`
+                    });
+
+                    marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                    });
+
+                    // Center the map on the selected marker
+                    map.setCenter(position);
+                } else {
+                    console.error(`Geocode was not successful: ${status}`);
+                }
+            });
+        }
+
+        function addMarkers(listings) {
+            listings.forEach(listing => {
+                const marker = new google.maps.Marker({
+                    position: { lat: listing.lat, lng: listing.lng },
+                    map: map,
+                    title: listing.title,
+                    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div>
+                        <h3>${listing.title}</h3>
+                        <p>${listing.description}</p>
+                    </div>`
+                });
+
+                marker.addListener("click", () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+        }
+
+        function closeMap() {
+            // Redirect to /boat_slips_page
+            window.location.href = '/boat_slips_page';
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiuS9mAJjmQ6xu1GLjGPd8FVq56o4mb0Q&callback=initMap" async defer></script>
+</body>
+</html>

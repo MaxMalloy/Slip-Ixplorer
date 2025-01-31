@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Listings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #d2b48c; /* Tan background */
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff; /* White background for header */
+            border-bottom: 2px solid #ddd; /* Optional border for separation */
+        }
+
+        .logo {
+            height: 50px; /* Adjust logo height */
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .listing-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .listing-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .listing-details {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/dashboard">
+            <img src="/assets/photos/IxPlorer.jpg" alt="SlipFinder Logo" class="logo">
+        </a>
+    </header>
+
+    <div class="container">
+    <h1 class="listing-title">Rental Listings</h1>
+
+    {% if listing %}
+        <div class="container">
+            <h2 class="listing-title">{{ listing.marina }}</h2>
+            {% if listing.image_filename %}
+            <img src="{{ url_for('uploaded_file', filename=listing.image_filename) }}" alt="{{ listing.marina }}" class="listing-image">
+            {% endif %}
+            <p class="listing-details"><strong>Location:</strong> {{ listing.city }}, {{ listing.state }}</p>
+            <p class="listing-details"><strong>Price:</strong> ${{ listing.price_year }} per year</p>
+            <p class="listing-details"><strong>Slip Number:</strong> {{ listing.slip_number }}</p>
+            <p class="listing-details"><strong>Length(ft):</strong> {{ listing.length }}</p>
+            <p class="listing-details"><strong>Width(ft):</strong> {{ listing.width }}</p>
+            <p class="listing-details"><strong>Electricity:</strong> {{ listing.electricity }}</p>
+            <p class="listing-details"><strong>Water:</strong> {{ listing.water }}</p>
+            <a href="/explore_rental_listings" class="back-button">Back to Listings</a>
+            <a href="mailto:{{ listing.email }}" class="back-button" style="margin-left: 10px;">Contact Owner</a>
+        </div>
+    {% else %}
+        <p>No rental listings available at the moment.</p>
+    {% endif %}
+</div>
+</body>
+</html>

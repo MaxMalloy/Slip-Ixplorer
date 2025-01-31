@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5deb3; /* Tan background for the page */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center; /* Align image and text in a row */
+            gap: 10px; /* Add spacing between image and text */
+        }
+
+        /* Logo Image */
+        .logo-container img {
+            height: 120px;
+            width: 120px;
+            object-fit: contain;
+        }
+
+        /* Slip Ixplorer Text */
+        .logo-text {
+            font-size: 2em; /* Match font size from Register page */
+            color: silver; /* Silver text */
+            font-weight: bold;
+            text-shadow: 
+                -1px -1px 0 black, /* Top left shadow */
+                 1px -1px 0 black, /* Top right shadow */
+                -1px  1px 0 black, /* Bottom left shadow */
+                 1px  1px 0 black; /* Bottom right shadow */
+        }
+
+        .login-container {
+            background: white;
+            padding: 6rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            height: 400px;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background: dodgerblue;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e90ff;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .register-link a {
+            color: dodgerblue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo and Text Container -->
+    <div class="logo-container">
+        <img src="/assets/photos/ixplorer.jpg" alt="ixplorer Logo">
+        <span class="logo-text">Slip Ixplorer</span>
+    </div>
+
+    <div class="login-container">
+        <h1>Login</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <form action="/login_form" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <div class="register-link">
+            <p>Don't have an account? <a href="/register_form">Register Now!!</a></p>
+        </div>
+    </div>
+
+</body>
+<script>
+    fetch("/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: "user@example.com", password: "password123" })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(err => console.error(err));
+</script>
+</html>

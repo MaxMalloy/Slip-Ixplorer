@@ -1,0 +1,3 @@
+ if not current_user_id:
+        # Redirect to login page if not authenticated
+        return redirect(url_for('login_form'))
